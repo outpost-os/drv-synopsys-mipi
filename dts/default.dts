@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2023,Ledger SAS
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+
+#include <st/u5/stm32u599.dtsi>
+#include <dt-bindings/pinctrl/stm32-pinctrl.h>
+#include <dt-bindings/i2c/i2c.h>
+
+/{
+	chosen {
+		outpost,i2c_port = <&i2c1>;
+	};
+};
+
+&dsi0 {
+	outpost,owner = <0xC001F002>;
+	status = "okay";
+};
+
+&ltdc0 {
+	outpost,owner = <0xC001F002>;
+	status = "okay";
+};
+
+/*
+ * Example device activation. In project mode, this sample dts should
+ * be replaced by the product's one
+ */
+&i2c1 {
+	status = "okay";
+	outpost,owner = <0xbabe>;
+	i2c,hsifreq = <0x8>;
+	pinctrl-0 = <&i2c1_scl_pb8>, <&i2c_sda_pb9>;
+};
+
+&pinctrl {
+		i2c1_scl_pb8: i2c_scl_pb8  {
+				pinmux = <&gpioa 6 STM32_DT_PIN_MODE_ALTFUNC(3)>;
+				pincfg = <STM32_OTYPER_OPEN_DRAIN \
+						  STM32_OSPEEDR_VERY_HIGH_SPEED \
+						  STM32_PUPDR_PULL_UP>;
+		};
+
+		i2c_sda_pb9: i2c_sda_pb9  {
+				pinmux = <&gpioa 7 STM32_DT_PIN_MODE_ALTFUNC(4)>;
+				pincfg = <STM32_OTYPER_OPEN_DRAIN \
+						  STM32_OSPEEDR_VERY_HIGH_SPEED \
+						  STM32_PUPDR_PULL_UP>;
+		};
+};

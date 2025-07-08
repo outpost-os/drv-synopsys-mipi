@@ -1,0 +1,4 @@
+[wrap-git]
+url = git@git.orange.ledgerlabs.net:outpost/drv-stm32-ltdc.git
+revision = main
+depth = 1

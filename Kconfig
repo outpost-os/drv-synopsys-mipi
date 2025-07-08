@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: 2024 Ledger SAS
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig SYNOPSYS_MIPI
+	bool "Synopsys MIPI-DSI driver"
+
+config SYNOPSYS_MIPI_DSI_HOST
+	bool "mipi dsi host"
+	default y
+	select SYNOPSYS_MIPI_DPHY
+	depends on SYNOPSYS_MIPI
+	help
+	  Enables support for MIPI-DSI Host.
+	  The MIPI DSI Host includes dedicated video interfaces internally connected to the LTDC
+	  and a generic APB interface that can be used to transmit information to the display
+
+config SYNOPSYS_MIPI_DSI_WRAPPER
+	bool "mipi wrapper"
+	default y
+	depends on SYNOPSYS_MIPI
+	help
+	  Enables support for MIPI Wrapper.
+	  The DSI Wrapper ensures the interfacing between the LTDC and the DSI Host kernel.
+	  It can adapt the color mode, the signal polarity and manages the tearing effect (TE)
+	  management for automatic frame buffer update in adapted command mode. The DSI
+	  Wrapper also control the DSI bias, the DSI PLL and specific functions of the MIPI D-
+	  PHY.
+
+config SYNOPSYS_MIPI_DPHY
+	bool "mipi D-phy"
+	default y
+	depends on SYNOPSYS_MIPI
+	help
+	  Enables support for MIPI-DPhy.
+	  The embedded MIPI D-PHY is control directly by the DSI Host and is configured through
+	  the DSI Wrapper.
+
+
+config WITH_VIDEO_PATTERN_GENERATOR
+	bool "Video pattern generator"
+	depends on SYNOPSYS_MIPI
+	depends on SYNOPSYS_MIPI_DSI_HOST
+
+
+choice VIDEO_PATTERN_ORIENTATION
+	prompt "Video pattern orientation"
+	depends on SYNOPSYS_MIPI
+	depends on WITH_VIDEO_PATTERN_GENERATOR
+
+config VIDEO_PATTERN_HORIZONTAL
+	bool "horizontal"
+
+config VIDEO_PATTERN_VERTICAL
+	bool "vertical"
+
+endchoice
